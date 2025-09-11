@@ -209,3 +209,4 @@ __marimo__/
 # Project-specific test files
 test_basic.py
 test_implementation.py
+solution_demo.py
