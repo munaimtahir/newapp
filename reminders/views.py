@@ -18,6 +18,8 @@ def index(request):
                     original_text=text, parsed_time=dt, location=location
                 )
                 return redirect("reminders:index")
+            else:
+                form.add_error(None, "Could not parse date from reminder text. Please try again.")
     else:
         form = ReminderForm()
     reminders = Reminder.objects.order_by("-created_at")[:10]
