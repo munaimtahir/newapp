@@ -78,8 +78,8 @@ def generate_reminder_schedule(task_due: datetime, prep_minutes: int) -> List[da
 
     if category == PrepCategory.UNDER_FOUR_HOURS:
         reminders.append(task_due - timedelta(hours=4))
-        reminders.append(datetime.combine(due_date, time(8, 0)))
         reminders.append(datetime.combine(due_date - timedelta(days=1), time(8, 0)))
+        reminders.append(datetime.combine(due_date, time(8, 0)))
 
     elif category == PrepCategory.ONE_DAY:
         reminders.append(task_due - timedelta(days=1))
