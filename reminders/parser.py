@@ -19,7 +19,7 @@ def parse_reminder_text(text: str) -> Tuple[datetime, str, Optional[int]]:
     task = match.group("task").strip()
     date_str = match.group("date")
     time_str = match.group("time")
-    due = datetime.fromisoformat(f"{date_str}T{time_str}")
+    due = datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
 
     # Basic duration extraction: look for patterns like 'for Xh' or 'for Xm'
     duration_match = re.search(r"for\s+(?P<value>\d+)\s*(?P<unit>[hm])", text, re.IGNORECASE)
