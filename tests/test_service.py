@@ -15,13 +15,13 @@ def test_create_reminder_with_parsed_duration(monkeypatch):
     def fake_schedule(task_due, expected_minutes):
         assert task_due == due
         assert expected_minutes == 30
-        return datetime(2024, 1, 1, 11, 50)
+        return [datetime(2024, 1, 1, 11, 50)]
 
     monkeypatch.setattr("reminders.service.parse_reminder_text", fake_parse, raising=False)
-    monkeypatch.setattr("reminders.service.schedule_reminder", fake_schedule)
+    monkeypatch.setattr("reminders.service.schedule_reminders", fake_schedule)
 
     reminder = create_reminder_from_text("take out trash at noon")
-    assert reminder == datetime(2024, 1, 1, 11, 50)
+    assert reminder == [datetime(2024, 1, 1, 11, 50)]
 
 
 def test_create_reminder_ai_estimation(monkeypatch):
@@ -37,14 +37,14 @@ def test_create_reminder_ai_estimation(monkeypatch):
     def fake_schedule(task_due, expected_minutes):
         assert task_due == due
         assert expected_minutes == 45
-        return datetime(2024, 2, 1, 8, 15)
+        return [datetime(2024, 2, 1, 8, 15)]
 
     monkeypatch.setattr("reminders.service.parse_reminder_text", fake_parse, raising=False)
     monkeypatch.setattr("reminders.service.estimate_task_duration", fake_estimate, raising=False)
-    monkeypatch.setattr("reminders.service.schedule_reminder", fake_schedule)
+    monkeypatch.setattr("reminders.service.schedule_reminders", fake_schedule)
 
     reminder = create_reminder_from_text("write a report by 9am")
-    assert reminder == datetime(2024, 2, 1, 8, 15)
+    assert reminder == [datetime(2024, 2, 1, 8, 15)]
 
 
 def test_create_reminder_needs_user_clarification(monkeypatch):

@@ -1,6 +1,9 @@
 from datetime import datetime
+from typing import List
 
-from .scheduler import determine_reminder_offset
+from .analyzer import estimate_task_duration
+from .parser import parse_reminder_text
+from .scheduler import determine_reminder_offset, generate_reminder_schedule
 
 
 def schedule_reminder(task_due: datetime, expected_minutes: int) -> datetime:
@@ -9,7 +12,17 @@ def schedule_reminder(task_due: datetime, expected_minutes: int) -> datetime:
     return task_due - offset
 
 
-def create_reminder_from_text(text: str) -> datetime:
+def schedule_reminders(task_due: datetime, expected_minutes: int) -> List[datetime]:
+    """Return a series of reminder datetimes for the task.
+
+    The reminder series is determined by the expected preparation duration of
+    the task. See :func:`generate_reminder_schedule` for the exact rules.
+    """
+
+    return generate_reminder_schedule(task_due, expected_minutes)
+
+
+def create_reminder_from_text(text: str) -> List[datetime]:
     """Create and schedule a reminder based on a free-form description.
 
     The ``text`` is parsed via :func:`parse_reminder_text` to determine when the
@@ -30,4 +43,4 @@ def create_reminder_from_text(text: str) -> datetime:
         if expected_minutes is None:
             raise ValueError("Unable to determine task duration; ask the user.")
 
-    return schedule_reminder(task_due, expected_minutes)
+    return schedule_reminders(task_due, expected_minutes)
