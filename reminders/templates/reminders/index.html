@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reminder App</title>
+</head>
+<body>
+  <h1>Set a Reminder</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Set Reminder</button>
+  </form>
+
+  <h2>Recent Reminders</h2>
+  <ul>
+    {% for r in reminders %}
+      <li>{{ r.original_text }} &rarr; {{ r.parsed_time }} {% if r.location %}at {{ r.location }}{% endif %}</li>
+    {% empty %}
+      <li>No reminders yet.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
